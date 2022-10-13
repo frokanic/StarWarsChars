@@ -40,6 +40,9 @@ class AllCharactersAdapter: RecyclerView.Adapter<AllCharactersAdapter.CharacterV
         val character = differ.currentList[position]
 
         holder.itemView.apply {
+            binding.nameTextView.text = character.name
+            binding.dobTextView.text = character.birth_year
+
             setOnClickListener {
                 onItemClickListener?.let { it(character) }
             }

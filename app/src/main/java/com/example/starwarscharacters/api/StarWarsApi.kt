@@ -9,16 +9,16 @@ import retrofit2.http.Query
 
 interface StarWarsApi {
 
-    @GET("/people")
+    @GET("people")
     suspend fun getCharactersList(): Response<Characters>
 
 
-    @GET("/people/?search")
+    @GET("people/?search")
     suspend fun getCharacterSearch(
         @Query("name") name: String
     ): Response<Characters>
 
-    @GET("/films/{num}")
+    @GET("films/{num}")
     suspend fun getFilms(
         @Path("num") num: String
     ):Response<Films>
