@@ -12,7 +12,6 @@ interface StarWarsApi {
     @GET("people")
     suspend fun getCharactersList(): Response<Characters>
 
-
     @GET("people/?search")
     suspend fun getCharacterSearch(
         @Query("name") name: String

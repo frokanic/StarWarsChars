@@ -57,6 +57,7 @@ class MainActivityViewModel(
                         oldCharacters?.addAll(newCharacters)
                     }
                 }
+                return Resource.Success(charactersResponse ?: it)
             }
         }
         return Resource.Error(response.message())
@@ -73,5 +74,6 @@ class MainActivityViewModel(
         }
         return Resource.Error(response.message())
     }
+
 
 }

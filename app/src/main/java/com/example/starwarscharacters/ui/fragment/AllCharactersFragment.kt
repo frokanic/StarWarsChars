@@ -76,6 +76,10 @@ class AllCharactersFragment : Fragment(R.layout.fragment_all_characters) {
             addOnScrollListener(this@AllCharactersFragment.scrollListener)
         }
         allCharactersAdapter.setOnItemClickListener {
+            val numOfCharactersToRemove = "https://swapi.dev/api/films/".count()
+            val films = it.films.forEach {
+                it.substring(numOfCharactersToRemove)
+            }
             findNavController().navigate(
                 R.id.action_allCharactersFragment_to_characterFragment
             )
@@ -105,6 +109,7 @@ class AllCharactersFragment : Fragment(R.layout.fragment_all_characters) {
         binding.charactersProgressBar.visibility = View.VISIBLE
         isLoading = true
     }
+
 
     val scrollListener = object : RecyclerView.OnScrollListener() {
 
@@ -155,7 +160,7 @@ class AllCharactersFragment : Fragment(R.layout.fragment_all_characters) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
-                        allCharactersAdapter.differ.submitList(it.results?.toList())
+                        allCharactersAdapter.differ.submitList(it.results.toList())
                         val totalPages = it.count / QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.num == totalPages
                     }
