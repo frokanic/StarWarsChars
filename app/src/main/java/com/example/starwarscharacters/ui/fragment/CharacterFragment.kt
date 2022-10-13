@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.starwarscharacters.R
+import com.example.starwarscharacters.data.ResultCharacters
 import com.example.starwarscharacters.databinding.FragmentCharacterBinding
 import com.example.starwarscharacters.ui.activity.MainActivityViewModel
-import com.example.starwarscharacters.ui.adapters.AllCharactersAdapter
 import com.example.starwarscharacters.ui.adapters.CharacterAdapter
 
 
@@ -19,6 +19,8 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
     private lateinit var binding: FragmentCharacterBinding
     lateinit var viewModel: MainActivityViewModel
     private lateinit var charactersAdapter: CharacterAdapter
+    private lateinit var character: ResultCharacters
+    val args: CharacterFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,10 +36,17 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
     }
 
     fun setUpContext() {
+        val character = args.character
+        val numOfCharactersToRemove = "https://swapi.dev/api/films/".count()
+        val films = listOf(character.films.forEach {
+            it.substring(numOfCharactersToRemove)
+        })
         charactersAdapter = CharacterAdapter()
         binding.recyclerViewFilms.apply {
             adapter = CharacterAdapter()
             layoutManager = LinearLayoutManager(activity)
+            binding
+
         }
     }
 
