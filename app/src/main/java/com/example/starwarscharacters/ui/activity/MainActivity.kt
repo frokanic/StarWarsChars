@@ -3,7 +3,6 @@ package com.example.starwarscharacters.ui.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.example.starwarscharacters.R
 import com.example.starwarscharacters.databinding.ActivityMainBinding
 import com.example.starwarscharacters.repository.StarWarsRepository
 

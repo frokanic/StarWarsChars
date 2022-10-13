@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +16,6 @@ import com.example.starwarscharacters.R
 import com.example.starwarscharacters.common.Constants.QUERY_PAGE_SIZE
 import com.example.starwarscharacters.common.Constants.SEARCH_TIME_DELAY
 import com.example.starwarscharacters.common.Resource
-import com.example.starwarscharacters.data.ResultCharacters
 import com.example.starwarscharacters.databinding.FragmentAllCharactersBinding
 import com.example.starwarscharacters.network.NetworkConnectivityObserver
 import com.example.starwarscharacters.ui.activity.MainActivity
@@ -28,7 +25,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.Math.round
 
 
 class AllCharactersFragment : Fragment(R.layout.fragment_all_characters) {
@@ -39,7 +35,7 @@ class AllCharactersFragment : Fragment(R.layout.fragment_all_characters) {
     private var networkManager = NetworkConnectivityObserver()
     private var isLoading = false
     private var isLastPage = false
-    private var isScrolling = false
+    private var isScrolling = true
 
 
 
@@ -77,13 +73,9 @@ class AllCharactersFragment : Fragment(R.layout.fragment_all_characters) {
             addOnScrollListener(this@AllCharactersFragment.scrollListener)
         }
         allCharactersAdapter.setOnItemClickListener {
-            val numOfCharactersToRemove = "https://swapi.dev/api/films/".count()
-            val films = it.films.forEach {
-                it.substring(numOfCharactersToRemove)
-            }
-            val bundle = bundleOf("films" to films)
+            val action: NavDirections = AllCharactersFragmentDirections.actionAllCharactersFragmentToCharacterFragment(it)
             findNavController().navigate(
-                R.id.action_allCharactersFragment_to_characterFragment
+                action
             )
         }
         var job: Job? = null
@@ -147,6 +139,7 @@ class AllCharactersFragment : Fragment(R.layout.fragment_all_characters) {
             }
         }
     }
+
 
 
     private fun makeCharactersRequest() {

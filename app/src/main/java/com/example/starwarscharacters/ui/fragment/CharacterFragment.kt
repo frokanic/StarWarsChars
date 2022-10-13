@@ -18,9 +18,9 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
 
     private lateinit var binding: FragmentCharacterBinding
     lateinit var viewModel: MainActivityViewModel
-    private lateinit var charactersAdapter: CharacterAdapter
+    private lateinit var characterAdapter: CharacterAdapter
     private lateinit var character: ResultCharacters
-    val args: CharacterFragmentArgs by navArgs()
+    private val args by navArgs<CharacterFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,18 +36,17 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
     }
 
     fun setUpContext() {
-        val character = args.character
+        binding.textViewFullNameValue.text = args.character?.name
         val numOfCharactersToRemove = "https://swapi.dev/api/films/".count()
-        val films = listOf(character.films.forEach {
+        val films = args.character.films.forEach {
             it.substring(numOfCharactersToRemove)
-        })
-        charactersAdapter = CharacterAdapter()
+        }
+
+        characterAdapter = CharacterAdapter()
         binding.recyclerViewFilms.apply {
             adapter = CharacterAdapter()
-            layoutManager = LinearLayoutManager(activity)
-            binding
-
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
     }
-
 }
+

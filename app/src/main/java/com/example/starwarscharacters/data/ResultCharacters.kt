@@ -1,5 +1,9 @@
 package com.example.starwarscharacters.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class ResultCharacters(
     val birth_year: String,
     val created: String,
@@ -17,4 +21,4 @@ data class ResultCharacters(
     val starships: List<String>,
     val url: String,
     val vehicles: List<String>
-)
+): Parcelable
