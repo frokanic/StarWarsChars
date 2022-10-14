@@ -9,7 +9,7 @@ import com.example.starwarscharacters.data.Films
 import com.example.starwarscharacters.databinding.FilmRowBinding
 
 
-class CharacterAdapter: RecyclerView.Adapter<CharacterAdapter.FilmViewHolder>() {
+class CharacterAdapter(private val films: Unit): RecyclerView.Adapter<CharacterAdapter.FilmViewHolder>() {
 
     inner class FilmViewHolder(val binding: FilmRowBinding) :
         RecyclerView.ViewHolder(binding.root)
