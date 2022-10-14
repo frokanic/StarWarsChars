@@ -36,11 +36,8 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
     }
 
     fun setUpContext() {
-        binding.textViewFullNameValue.text = args.character?.name
-        val numOfCharactersToRemove = "https://swapi.dev/api/films/".count()
-        val films = args.character.films.forEach {
-            it.substring(numOfCharactersToRemove)
-        }
+        binding.textViewFullNameValue.text = args.character.name
+
 
         characterAdapter = CharacterAdapter()
         binding.recyclerViewFilms.apply {

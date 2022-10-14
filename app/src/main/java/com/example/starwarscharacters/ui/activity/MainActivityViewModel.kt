@@ -1,28 +1,34 @@
 package com.example.starwarscharacters.ui.activity
 
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.starwarscharacters.common.Resource
 import com.example.starwarscharacters.data.Characters
 import com.example.starwarscharacters.data.Films
 import com.example.starwarscharacters.network.NetworkConnectivityObserver
 import com.example.starwarscharacters.repository.StarWarsRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 
 class MainActivityViewModel(
     private val repository: StarWarsRepository
-): ViewModel() {
+    ): ViewModel() {
 
     val characters: MutableLiveData<Resource<Characters>> = MutableLiveData()
+    private val _details = MutableLiveData<Character>()
+    val details: LiveData<Character>
+        get() = _details
     private var charactersResponse: Characters? = null
     val films: MutableLiveData<Resource<Films>> = MutableLiveData()
     private var filmsResponse: Films? = null
     private lateinit var networkConnectivityObserver: NetworkConnectivityObserver
+    private val filmsList: ArrayList<Films> = ArrayList()
     var num = 1
+
+
 
     fun getCharacters() = viewModelScope.launch {
         characters.postValue(Resource.Loading())
@@ -37,11 +43,8 @@ class MainActivityViewModel(
         characters.postValue(handleCharactersResponse(response))
     }
 
-    suspend fun getFilms(num: String) {
-        films.postValue(Resource.Loading())
-        films.postValue(Resource.Loading())
-        val response = repository.getFilms(num)
-        films.postValue(handleFilmsResponse(response))
+    private suspend fun getFilmData() {
+        filmsList.add(repository.getFilms(films.value!!.data!!.url))
     }
 
     private fun handleCharactersResponse(response: Response<Characters>): Resource<Characters> {

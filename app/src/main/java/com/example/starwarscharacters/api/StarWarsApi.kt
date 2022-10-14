@@ -6,6 +6,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface StarWarsApi {
 
@@ -17,9 +18,7 @@ interface StarWarsApi {
         @Query("name") name: String
     ): Response<Characters>
 
-    @GET("films/{num}")
-    suspend fun getFilms(
-        @Path("num") num: String
-    ):Response<Films>
+    @GET
+    fun getFilm(@Url url: String): Films
 
 }

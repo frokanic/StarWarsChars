@@ -15,8 +15,8 @@ class StarWarsRepository {
         return RetrofitInstance.api.getCharacterSearch(name)
     }
 
-    suspend fun getFilms(num: String): Response<Films> {
-        return RetrofitInstance.api.getFilms(num)
+    fun getFilms(url: String): Films {
+        return RetrofitInstance.api.getFilm(url)
     }
 
 }

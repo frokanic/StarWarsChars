@@ -169,6 +169,9 @@ class AllCharactersFragment : Fragment(R.layout.fragment_all_characters) {
                     }
                     hideProgressBar()
                 }
+                is Resource.Empty -> {
+                    hideProgressBar()
+                }
             }
         }
     }

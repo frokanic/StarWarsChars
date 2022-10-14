@@ -4,31 +4,27 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwarscharacters.data.Films
 import com.example.starwarscharacters.databinding.FilmRowBinding
 
 
-class CharacterAdapter(private val films: Unit): RecyclerView.Adapter<CharacterAdapter.FilmViewHolder>() {
-
-    inner class FilmViewHolder(val binding: FilmRowBinding) :
-        RecyclerView.ViewHolder(binding.root)
 
 
-    private val differCallback = object  : DiffUtil.ItemCallback<Films>() {
-        override fun areItemsTheSame( oldItem: Films, newItem: Films): Boolean {
-            return oldItem.title == newItem.title
-        }
+class CharacterAdapter :
+    ListAdapter<Films, CharacterAdapter.MyViewHolder>(CHARACTER_COMPARATOR) {
 
-        override fun areContentsTheSame(oldItem: Films, newItem: Films): Boolean {
-            return oldItem == newItem
+    inner class MyViewHolder(private val binding: FilmRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(filmResponse: Films?) {
+            binding.textViewFilmName.text = filmResponse?.title
+            binding.textViewOpeningCrawl.text = filmResponse?.opening_crawl
         }
     }
 
-    val differ = AsyncListDiffer(this, differCallback)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterAdapter.FilmViewHolder {
-        return FilmViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        return MyViewHolder(
             FilmRowBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -37,20 +33,23 @@ class CharacterAdapter(private val films: Unit): RecyclerView.Adapter<CharacterA
         )
     }
 
-    override fun onBindViewHolder(holder: CharacterAdapter.FilmViewHolder, position: Int) {
-        val binding = holder.binding
-        val film = differ.currentList[position]
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val character = getItem(position)
+        holder.bind(character)
+    }
 
-        holder.itemView.apply {
-            binding.textViewFilmName.text = film.title
-            binding.textViewOpeningCrawl.text = film.opening_crawl
+    companion object {
+        private val CHARACTER_COMPARATOR = object : DiffUtil.ItemCallback<Films>() {
+            override fun areItemsTheSame(oldItem: Films, newItem: Films): Boolean {
+                return oldItem.title == newItem.title
+            }
+
+            override fun areContentsTheSame(oldItem: Films, newItem: Films): Boolean {
+                return oldItem == newItem
+            }
         }
     }
-
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
-
-
 }
+
+
 
