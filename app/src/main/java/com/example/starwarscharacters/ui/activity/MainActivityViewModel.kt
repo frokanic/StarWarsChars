@@ -43,8 +43,13 @@ class MainActivityViewModel(
         characters.postValue(handleCharactersResponse(response))
     }
 
-    private suspend fun getFilmData() {
-        filmsList.add(repository.getFilms(films.value!!.data!!.url))
+    suspend fun getFilmData(): ArrayList<Films> {
+        try {
+            filmsList.add(repository.getFilms(films.value!!.data!!.url))
+            return filmsList
+        } catch (e: Exception) {
+            return filmsList
+        }
     }
 
     private fun handleCharactersResponse(response: Response<Characters>): Resource<Characters> {
